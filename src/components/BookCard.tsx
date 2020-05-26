@@ -1,20 +1,22 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 import { bookItems } from '../constants/index'
+import GridList from '@material-ui/core/GridList'
+import GridListTile from '@material-ui/core/GridListTile'
+import GridListTileBar from '@material-ui/core/GridListTileBar'
+import IconButton from '@material-ui/core/IconButton'
+import { ShoppingCartOutlined } from '@material-ui/icons'
 
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
   },
-  media: {
-    height: 400,
+  gridList: {
+    width: 800,
+    height: 450,
+  },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)',
   },
 })
 
@@ -23,35 +25,29 @@ const BookCard = () => {
 
   return (
     <ul>
-      {bookItems.map((el) => (
-        <Card key={el.id} className={classes.root}>
-          <CardActionArea>
-            <CardMedia
-              className={classes.media}
-              image={el.book_cover}
-              title='Books'
+      <GridList cellHeight={160} className={classes.gridList} cols={5}>
+        {bookItems.map((el) => (
+          <GridListTile key={el.id} className={classes.root}>
+            <img src={el.book_cover} alt={el.title} />
+            <GridListTileBar
+              title={el.title}
+              subtitle={
+                <span>
+                  {el.author} ({el.published_date})
+                </span>
+              }
+              actionIcon={
+                <IconButton
+                  aria-label={`shopping cart: ${el.title}`}
+                  className={classes.icon}
+                >
+                  <ShoppingCartOutlined />
+                </IconButton>
+              }
             />
-            <CardContent>
-              <Typography gutterBottom variant='h5' component='h2'>
-                {el.title}
-              </Typography>
-              <Typography variant='body2' color='textSecondary' component='p'>
-                <b>Author:</b> {el.author} <br />
-                <b>Published Year:</b> {el.published_date} <br />
-                <b>Pages:</b> {el.quantity} <br />
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button size='small' color='primary'>
-              Share
-            </Button>
-            <Button size='small' color='primary'>
-              Learn More
-            </Button>
-          </CardActions>
-        </Card>
-      ))}
+          </GridListTile>
+        ))}
+      </GridList>
     </ul>
   )
 }
